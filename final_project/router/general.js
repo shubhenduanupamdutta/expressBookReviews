@@ -117,4 +117,25 @@ books_by_author_promise("Jane Austen")
 		console.error(error);
 	});
 
+function books_by_title_promise(title) {
+	return new Promise((resolve, reject) => {
+		let foundBooks = Object.values(books).filter(
+			(book) => book.title.toLowerCase() === title.toLowerCase()
+		);
+		if (foundBooks.length > 0) {
+			resolve(foundBooks);
+		} else {
+			reject("No books found with this title");
+		}
+	});
+}
+
+books_by_title_promise("One Thousand and One Nights")
+	.then((books) => {
+		console.log("Books with title found:", books);
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+
 module.exports.general = public_users;
