@@ -67,34 +67,29 @@ public_users.get("/review/:isbn", function (req, res) {
 	}
 });
 
-/*
-Add the code for getting the list of books available in the shop (done in Task 1) using Promise callbacks or async-await with Axios.
-*/
-
-let booksPromise = new Promise((resolve, reject) => {
-	resolve(books);
-});
-booksPromise.then((data) => {
-	console.log("Books data fetched successfully");
-	console.log(data);
+public_users.get("/", function (req, res) {
+	const get_books = new Promise((resolve, reject) => {
+		resolve(res.send(JSON.stringify(books, null, 4)));
+	});
+	get_books
+		.then(() => console.log("Books data fetched successfully"))
+		.catch((error) => console.error("Error fetching books data:", error));
 });
 
-function books_by_isbn_promise(isbn) {
-	return new Promise((resolve, reject) => {
+public_users.get("/isbn/:isbn", function (req, res) {
+	const books_by_isbn_promise = new Promise((resolve, reject) => {
+		const isbn = req.params.isbn;
+		console.log("Fetching book with ISBN:", isbn);
 		if (books[isbn]) {
-			resolve(books[isbn]);
+			resolve(res.status(200).json(books[isbn]));
 		} else {
-			reject("Book not found");
+			reject(res.status(404).json({ message: "Book not found" }));
 		}
 	});
-}
-books_by_isbn_promise("1")
-	.then((book) => {
-		console.log("Book found:", book);
-	})
-	.catch((error) => {
-		console.error(error);
-	});
+	return books_by_isbn_promise
+		.then(() => console.log("Book found successfully"))
+		.catch((error) => console.error("Error fetching book:", error));
+});
 
 function books_by_author_promise(author) {
 	return new Promise((resolve, reject) => {
