@@ -110,46 +110,23 @@ public_users.get("/author/:author", async function (req, res) {
 		.catch((error) => console.error("Error fetching books by author:", error));
 });
 
-function books_by_author_promise(author) {
-	return new Promise((resolve, reject) => {
-		let foundBooks = Object.values(books).filter(
-			(book) => book.author.toLowerCase() === author.toLowerCase()
-		);
-		if (foundBooks.length > 0) {
-			resolve(foundBooks);
-		} else {
-			reject("No books found by this author");
-		}
-	});
-}
-
-books_by_author_promise("Jane Austen")
-	.then((books) => {
-		console.log("Books by author found:", books);
-	})
-	.catch((error) => {
-		console.error(error);
-	});
-
-function books_by_title_promise(title) {
-	return new Promise((resolve, reject) => {
+public_users.get("/books/title/:title", function (req, res) {
+	const books_by_title_promise = new Promise((resolve, reject) => {
+		const title = req.params.title;
+		console.log("Fetching books with title:", title);
 		let foundBooks = Object.values(books).filter(
 			(book) => book.title.toLowerCase() === title.toLowerCase()
 		);
 		if (foundBooks.length > 0) {
-			resolve(foundBooks);
+			resolve(res.status(200).json(foundBooks));
 		} else {
-			reject("No books found with this title");
+			reject(res.status(404).json({ message: "No books found with this title" }));
 		}
 	});
-}
 
-books_by_title_promise("One Thousand and One Nights")
-	.then((books) => {
-		console.log("Books with title found:", books);
-	})
-	.catch((error) => {
-		console.error(error);
-	});
+	return books_by_title_promise
+		.then(() => console.log("Books by title found successfully"))
+		.catch((error) => console.error("Error fetching books by title:", error));
+});
 
 module.exports.general = public_users;
