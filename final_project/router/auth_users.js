@@ -63,6 +63,19 @@ As you are required to login as a customer, while testing the output on Postman,
 	});
 });
 
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+	const isbn = req.params.isbn;
+	const username = req.user.data;
+
+	if (!books[isbn] || !books[isbn].reviews || !books[isbn].reviews[username]) {
+		return res.status(404).json({ message: "Review not found" });
+	}
+
+	delete books[isbn].reviews[username];
+
+	return res.status(200).json({ message: "Review deleted successfully" });
+});
+
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
