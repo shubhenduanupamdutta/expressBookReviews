@@ -67,4 +67,16 @@ public_users.get("/review/:isbn", function (req, res) {
 	}
 });
 
+/*
+Add the code for getting the list of books available in the shop (done in Task 1) using Promise callbacks or async-await with Axios.
+*/
+
+let booksPromise = new Promise((resolve, reject) => {
+	resolve(books);
+});
+booksPromise.then((data) => {
+	console.log("Books data fetched successfully");
+	console.log(data);
+});
+
 module.exports.general = public_users;
