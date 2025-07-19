@@ -96,4 +96,25 @@ books_by_isbn_promise("1")
 		console.error(error);
 	});
 
+function books_by_author_promise(author) {
+	return new Promise((resolve, reject) => {
+		let foundBooks = Object.values(books).filter(
+			(book) => book.author.toLowerCase() === author.toLowerCase()
+		);
+		if (foundBooks.length > 0) {
+			resolve(foundBooks);
+		} else {
+			reject("No books found by this author");
+		}
+	});
+}
+
+books_by_author_promise("Jane Austen")
+	.then((books) => {
+		console.log("Books by author found:", books);
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+
 module.exports.general = public_users;
