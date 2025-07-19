@@ -13,7 +13,7 @@ public_users.post("/register", (req, res) => {
 		return res.status(400).json({ message: "Username already exists. Please login." });
 	}
 	users.push({ username, password });
-	return res.status(201).json({ message: "User registered successfully" });
+	return res.status(201).json({ message: `User ${username} registered successfully.` });
 });
 
 // GET: Get the book list available in the shop
