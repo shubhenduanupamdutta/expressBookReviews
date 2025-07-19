@@ -35,10 +35,32 @@ regd_users.post("/login", (req, res) => {
 	}
 });
 
-// Add a book review
+// PUT: Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-	//Write your code here
-	return res.status(300).json({ message: "Yet to be implemented" });
+	/*
+	Hint: The code must validate and sign in a customer based on the username and password created in Exercise 6. It must also save the user credentials for the session as a JWT.
+As you are required to login as a customer, while testing the output on Postman, use the endpoint as "customer/login"
+*/
+	const isbn = req.params.isbn;
+	const { review } = req.body;
+	const username = req.user.data;
+
+	if (!books[isbn]) {
+		return res.status(404).json({ message: "Book not found" });
+	}
+
+	if (!books[isbn].reviews) {
+		books[isbn].reviews = {
+			[username]: review,
+		};
+	}
+
+	books[isbn].reviews[username] = review;
+
+	return res.status(200).json({
+		message: "Review added successfully",
+		review: books[isbn].reviews[username],
+	});
 });
 
 module.exports.authenticated = regd_users;
