@@ -79,4 +79,21 @@ booksPromise.then((data) => {
 	console.log(data);
 });
 
+function books_by_isbn_promise(isbn) {
+	return new Promise((resolve, reject) => {
+		if (books[isbn]) {
+			resolve(books[isbn]);
+		} else {
+			reject("Book not found");
+		}
+	});
+}
+books_by_isbn_promise("1")
+	.then((book) => {
+		console.log("Book found:", book);
+	})
+	.catch((error) => {
+		console.error(error);
+	});
+
 module.exports.general = public_users;
